@@ -35,7 +35,14 @@ async function deletePost(id: number): Promise<void> {
   await fetch(`/api/post/${id}`, {
     method: 'DELETE',
   });
-  Router.push('/');
+  await Router.push('/');
+}
+
+async function unpublishPost(id: number): Promise<void> {
+  await fetch(`/api/post/${id}`, {
+    method: 'PUT',
+  });
+  await Router.push('/')
 }
 
 const Post: React.FC<PostProps> = (props) => {
@@ -59,6 +66,11 @@ const Post: React.FC<PostProps> = (props) => {
         {!props.published && userHasValidSession && postBelongsToUser && (
           <button onClick={() => publishPost(props.id)}>Publish</button>
         )
+        }
+        {
+          props.published && userHasValidSession && postBelongsToUser && (
+            <button onClick={() => unpublishPost(props.id)}>Unpublish</button>
+          )
         }
         {
           userHasValidSession && postBelongsToUser && (

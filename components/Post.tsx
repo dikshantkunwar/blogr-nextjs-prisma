@@ -1,6 +1,7 @@
 import React from "react";
 import Router from "next/router";
 import ReactMarkdown from "react-markdown";
+import { useSession } from "next-auth/react";
 
 export type PostProps = {
   id: number;
@@ -15,10 +16,12 @@ export type PostProps = {
 
 const Post: React.FC<{ post: PostProps }> = ({ post }) => {
   const authorName = post.author ? post.author.name : "Unknown author";
+  const { data: session, status } = useSession();
   return (
     <div onClick={() => Router.push("/p/[id]", `/p/${post.id}`)}>
       <h2>{post.title}</h2>
       <small>By {authorName}</small>
+      <hr />
       <ReactMarkdown children={post.content} />
       <style jsx>{`
         div {
